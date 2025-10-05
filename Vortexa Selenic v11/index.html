@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEO Commercialization Planner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+        .header {
+            width: 100%;
+            padding: 15px 40px;
+            box-sizing: border-box;
+            background-color: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            position: fixed;
+            top: 0;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo {
+            height: 64px;
+            width: auto;
+            border-radius: 0;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .cta-button {
+            background-color: #764ba2;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: -1;
+        }
+        .cta-button:hover {
+            color: #764ba2;
+        }
+        .cta-button:hover::before {
+            transform: translateX(0);
+        }
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 40px;
+            max-width: 900px;
+        }
+        .hero-content h2 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin: 0 0 20px 0;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+        }
+        .hero-content p {
+            font-size: 1.4rem;
+            color: #e0e0e0;
+            margin: 0 auto 40px auto;
+            line-height: 1.6;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+        .features {
+            padding: 80px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #121212;
+        }
+        .features h3 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: #e0e0e0;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        .feature-card {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 0;
+            padding: 35px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .feature-card h4 {
+            font-size: 1.4rem;
+            margin: 0 0 15px 0;
+            color: #667eea;
+        }
+        .feature-card p {
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin: 0;
+        }
+        .about {
+            padding: 80px 40px;
+            background-color: #1a1a1a;
+            text-align: center;
+        }
+        .about h3 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #e0e0e0;
+        }
+        .about p {
+            max-width: 900px;
+            margin: 0 auto 25px auto;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #b0b0b0;
+        }
+        .cta-section {
+            padding: 100px 40px;
+            text-align: center;
+            background-color: #667eea;
+        }
+        .cta-section h3 {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            color: white;
+        }
+        .cta-section p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.95);
+        }
+        .cta-section .cta-button {
+            background: white;
+            color: #667eea;
+            font-size: 1.2rem;
+            padding: 16px 45px;
+        }
+        .cta-section .cta-button:hover {
+            background: #ffffff; /* Keep it white */
+            color: #121212; /* Change text color */
+        }
+         .cta-section .cta-button:hover::before {
+            transform: translateX(0);
+        }
+        .cta-section .cta-button::before {
+            background-color: #e0e0e0; /* A light grey fill for contrast */
+        }
+        .footer {
+            padding: 40px;
+            text-align: center;
+            background-color: #1e1e1e;
+            border-top: 1px solid #333;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="img/logo-tim.png" alt="Logo" class="logo">
+            <h1>LEO Commercialization Planner</h1>
+        </div>
+        <button class="cta-button" onclick="window.location.href='planner.html'">Launch Planner</button>
+    </div>
+    <div class="hero">
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-content">
+            <h2>TAKING LEO TO ANOTHER LEVEL</h2>
+            <p>Make data-driven decisions for satellite deployment, coverage optimization, and commercial viability assessment using real-time orbital mechanics and population density analytics.</p>
+            <button class="cta-button" onclick="window.location.href='planner.html'" style="font-size: 1.3rem; padding: 16px 45px;">Get Started</button>
+        </div>
+    </div>
+    
+    <div class="features">
+        <h3>Key Analytical Features</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🛰️</div>
+                <h4>Coverage Assessment by Population</h4>
+                <p>Visualize your satellite's ground track over a high-resolution global population map. Calculate the total number of people within your satellite's coverage area to quantify your potential market reach and optimize for maximum impact.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h4>Coverage Assessment by Area (km²)</h4>
+                <p>Determine the unique geographical area your satellite can service. This tool helps optimize orbits to maximize coverage over specific landmasses or regions, crucial for Earth observation, agriculture, or maritime services.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h4>Debris Safety Prediction</h4>
+                <p>Assess mission risk by simulating your trajectory against a database of known orbital debris. Receive a risk assessment score to ensure the long-term safety and operational viability of your valuable assets in space.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h4>Launch Cost Assessment</h4>
+                <p>Estimate launch expenses by comparing various providers based on satellite mass, target orbit, and launch window. This feature is essential for building a realistic financial plan and securing investment for your venture.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h4>Break-Even Point Analysis</h4>
+                <p>Project your mission's financial viability. Input operational costs and revenue models alongside our coverage data to calculate the break-even point, helping you understand the path to profitability for your commercial space service.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="about">
+        <h3>Why LEO Commercialization Matters</h3>
+        <p>Low Earth Orbit represents the next frontier for commercial space activities. From telecommunications to Earth observation, IoT connectivity to scientific research, LEO satellites are revolutionizing how we connect and understand our planet.</p>
+        <p>Our planner gives you the analytical tools to make informed decisions about satellite deployment, helping you understand coverage patterns, population reach, and commercial viability before committing to expensive space missions.</p>
+        <p>Whether you're planning a telecommunications constellation, an Earth observation mission, or an IoT network, LEO Commercialization Planner provides the insights you need to succeed.</p>
+    </div>
+    <div class="cta-section">
+        <h3>Ready to Plan Your Mission?</h3>
+        <p>Start exploring orbital mechanics and coverage analytics today</p>
+        <button class="cta-button" onclick="window.location.href='planner.html'">Launch Planner Now</button>
+    </div>
+    <div class="footer">
+        <p>&copy; 2025 LEO Commercialization Planner. Built for the future of space commerce.</p>
+    </div>
+    <script>
+        const canvas = document.getElementById('hero-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 120;
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        const earthGeometry = new THREE.SphereGeometry(40, 64, 64);
+        const textureLoader = new THREE.TextureLoader();
+        const earthMaterial = new THREE.MeshPhongMaterial({
+            map: textureLoader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/planets/earth_atmos_2048.jpg'),
+            bumpMap: textureLoader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/planets/earth_atmos_2048.jpg'),
+            bumpScale: 0.3
+        });
+        const earth = new THREE.Mesh(earthGeometry, earthMaterial);
+        scene.add(earth);
+        const atmosphereGeometry = new THREE.SphereGeometry(41, 64, 64);
+        const atmosphereMaterial = new THREE.ShaderMaterial({
+            vertexShader: `
+                varying vec3 vNormal;
+                void main() {
+                    vNormal = normalize(normalMatrix * normal);
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                varying vec3 vNormal;
+                void main() {
+                    float intensity = pow(0.6 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
+                    gl_FragColor = vec4(0.3, 0.6, 1.0, 1.0) * intensity * 0.6;
+                }
+            `,
+            blending: THREE.AdditiveBlending,
+            side: THREE.BackSide,
+            transparent: true
+        });
+        const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+        scene.add(atmosphere);
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.8);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        directionalLight.position.set(5, 3, 5);
+        scene.add(directionalLight);
+        const starGeometry = new THREE.BufferGeometry();
+        const starVertices = [];
+        for (let i = 0; i < 5000; i++) {
+            const x = (Math.random() - 0.5) * 2000;
+            const y = (Math.random() - 0.5) * 2000;
+            const z = (Math.random() - 0.5) * 2000;
+            starVertices.push(x, y, z);
+        }
+        starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+        const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.7 });
+        const stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+        function animate() {
+            requestAnimationFrame(animate);
+            earth.rotation.y += 0.001;
+            atmosphere.rotation.y += 0.001;
+            renderer.render(scene, camera);
+        }
+        animate();
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

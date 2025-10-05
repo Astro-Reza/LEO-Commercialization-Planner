@@ -1,0 +1,14 @@
+{
+  "raster_source": "population_map\\gpw_v4_2020.tif",
+  "land_mask_source": "land_render\\ne_10m_land.shp",
+  "total_raw": 8021254026.415841,
+  "total_adjusted": 7000000000.0,
+  "scale_factor": 0.8726815005418584,
+  "target_population": 7000000000,
+  "crs": "EPSG:4326",
+  "resolution": [
+    1.0,
+    1.0
+  ],
+  "default_crs_applied": true
+}

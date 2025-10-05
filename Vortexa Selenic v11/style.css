@@ -1,0 +1,326 @@
+body {
+    font-family: 'Roboto Mono', monospace;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    color: #e0e0e0;
+    overflow: hidden; /* Prevent scrolling */
+}
+/* Header styles */
+.header {
+    width: 100%;
+    padding: 5px 20px;
+    box-sizing: border-box;
+    background-color: #1e1e1e;
+    border-bottom: 1px solid #333;
+    display: flex;
+    align-items: center;
+    z-index: 100;
+    position: relative;
+}
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.logo {
+    height: 64px;
+    width: auto;
+    border-radius: 0;
+}
+.header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
+}
+/* 3D Globe container */
+.map-wrapper {
+    height: calc(100vh - 74px); /* Adjusted for header height */
+    padding: 0;
+    position: relative;
+}
+#map-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+#globe-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+#population-tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 0;
+    font-size: 0.9rem;
+    font-family: 'Roboto Mono', monospace;
+    z-index: 10;
+    pointer-events: none;
+    white-space: nowrap;
+    transform: translate(-50%, -120%);
+    display: none;
+}
+/* Footer styles */
+.footer-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end; /* Align controls to the right */
+    align-items: center;
+    backdrop-filter: blur(5px);
+    border-top: 1px solid #333;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.coverage-menu {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.coverage-menu h3 {
+    margin: 0 0 5px 0;
+    font-weight: 500;
+    font-size: 0.9rem;
+    font-family: 'Roboto Mono', monospace;
+}
+.coverage-menu p#score-display {
+    margin: 8px 0 0 0;
+    font-size: 1rem;
+    color: #a0e0ff;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: bold;
+    min-height: 1.2em;
+}
+.menu-btn {
+    background-color: #333;
+    border: 1px solid #555;
+    color: #e0e0e0;
+    padding: 8px 12px;
+    border-radius: 0;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+.menu-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: -1;
+}
+.menu-btn:hover {
+    color: #121212;
+}
+.menu-btn:hover::before {
+    transform: translateX(0);
+}
+.menu-btn.active {
+    background-color: #007bff;
+    border-color: #0056b3;
+    color: white;
+}
+.controls-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-grow: 1;
+}
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.controls button {
+    background: none;
+    border: 1px solid #555;
+    color: #e0e0e0;
+    border-radius: 0;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    /* --- UPDATED STYLES --- */
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 12px;
+    min-width: 90px;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+.controls button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: -1;
+}
+.controls button:hover {
+    color: #121212;
+}
+.controls button:hover::before {
+    transform: translateX(0);
+}
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#speed-slider {
+    width: 150px;
+}
+.time-info {
+    text-align: right;
+}
+.time-info h3 {
+    margin: 0;
+    font-weight: 500;
+    font-size: 0.9rem;
+    font-family: 'Roboto Mono', monospace;
+}
+.time-info p {
+    margin: 2px 0;
+    font-size: 1.1rem;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.economic-analysis-container {
+    margin-top: 15px;
+    border-top: 1px solid #444;
+    padding-top: 10px;
+}
+
+.eco-slider {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+}
+
+.eco-slider label {
+    margin-bottom: 4px;
+}
+
+.eco-slider input[type="range"] {
+    width: 100%;
+}
+
+#economic-display {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid #444;
+    padding: 8px;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    white-space: pre-wrap;
+    min-height: 50px;
+    color: #c0d0ff;
+}
+
+.left-sidebar {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    width: 320px;
+    z-index: 101;
+    background-color: rgba(30, 30, 30, 0.85);
+    backdrop-filter: blur(5px);
+    border: 1px solid #444;
+    padding: 15px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+}
+
+.sidebar-section {
+    margin-bottom: 20px;
+}
+.sidebar-section:last-child {
+    margin-bottom: 0;
+}
+
+/* REPLACE the old .left-sidebar h3 styles with this */
+.sidebar-section h3 {
+    margin: 0 0 10px 0;
+    font-weight: 500;
+    font-size: 0.9rem;
+    font-family: 'Roboto Mono', monospace;
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px;
+}
+
+.pinpoint-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pinpoint-controls input[type="number"] {
+    background-color: #2a2a2a;
+    border: 1px solid #555;
+    color: #e0e0e0;
+    padding: 8px;
+    font-family: 'Roboto Mono', monospace;
+    border-radius: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.pinpoint-controls input[type="number"]::placeholder {
+    color: #888;
+}
+
+.header {
+    justify-content: space-between; /* Ensure space between logo and TLE input */
+}
+
+.tle-updater {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tle-updater textarea {
+    background-color: #2a2a2a;
+    border: 1px solid #555;
+    color: #e0e0e0;
+    padding: 5px 8px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.8rem;
+    border-radius: 0;
+    width: 350px; /* Adjust width as needed */
+    resize: none; /* Disable resizing */
+}
+
+.tle-updater textarea::placeholder {
+    color: #888;
+}
+
+.tle-updater .menu-btn {
+    height: 100%; /* Match height of the textarea */
+}

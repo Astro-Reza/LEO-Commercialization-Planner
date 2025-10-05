@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEO Mission Planning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/TextureLoader.min.js"></script>
+    
+    <style>
+        body {
+            background: radial-gradient(ellipse at center, #1b2735 0%, #090a0f 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+           <img src="img/logo-tim.png" alt="Logo" class="logo">
+           <h1>LEO Commercialization Planner</h1>
+        </div>
+
+        <div class="tle-updater">
+            <textarea id="tle-input" rows="3" placeholder="Paste TLE here (Name on L1, TLE on L2 & L3)"></textarea>
+            <button id="update-tle-btn" class="menu-btn">Load TLE</button>
+        </div>
+    </div>
+
+    <div class="map-wrapper">
+        <div id="map-container">
+            <div id="population-tooltip" style="display: none;"></div>
+            <canvas id="globe-canvas"></canvas>
+        </div>
+    </div>
+
+    <div class="left-sidebar">
+        <div class="sidebar-section">
+            <h3>Manual Pinpoint</h3>
+            <div class="pinpoint-controls">
+                <input type="number" id="lat-input" placeholder="Latitude (-90 to 90)" min="-90" max="90" step="any">
+                <input type="number" id="lon-input" placeholder="Longitude (-180 to 180)" min="-180" max="180" step="any">
+                <button id="pinpoint-btn" class="menu-btn">Place Pin</button>
+            </div>
+        </div>
+        <div class="sidebar-section">
+            <h3>Coverage Analysis</h3>
+            <button id="toggle-population-btn" class="menu-btn">View Population Density</button>
+        </div>
+        <div class="sidebar-section">
+            <h3>Coverage Score (1 Orbit)</h3>
+            <div>
+                <button id="calculate-score-btn" class="menu-btn">by Population</button>
+                <button id="calculate-area-btn" class="menu-btn">by Area (km²)</button>
+            </div>
+            <p id="score-display"></p>
+        </div>
+        <div class="sidebar-section economic-analysis-container">
+            <h3>Economic Analysis</h3>
+            <div class="eco-slider">
+                <label for="adoption-rate-slider">Adoption Rate: <span id="adoption-rate-label">10%</span></label>
+                <input type="range" id="adoption-rate-slider" min="1" max="100" value="10" step="1">
+            </div>
+            <div class="eco-slider">
+                <label for="arpu-slider">ARPU (USD/Month): <span id="arpu-label">$5</span></label>
+                <input type="range" id="arpu-slider" min="1" max="100" value="5" step="1">
+            </div>
+            <button id="calculate-economics-btn" class="menu-btn">Calculate Economics</button>
+            <pre id="economic-display"></pre>
+        </div>
+    </div>
+
+    <div class="footer-container">
+        <div class="controls-container">
+            <div class="controls">
+                <button id="reverse-btn">Backward</button>
+                <button id="play-pause-btn">Pause</button>
+                <button id="forward-btn">Forward</button>
+                <div class="slider-container">
+                    <label for="speed-slider">Speed: <span id="speed-label">100x</span></label>
+                    <input type="range" id="speed-slider" min="1" max="5000" value="100" step="1">
+                </div>
+            </div>
+            <div class="time-info">
+                <h3>Time from TLE Epoch</h3>
+                <p id="time-display">Day 00 / Hour 00:00:00</p>
+                <p id="utc-time-display">UTC: Loading...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
